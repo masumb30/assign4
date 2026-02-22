@@ -6,13 +6,40 @@ const totalJobCount = document.querySelectorAll('.total-job-count');
 let interviewJobsArray = [];
 let rejectedJobsArray = [];
 
+function filterInterviewJobsArray(name){
+    let newArray = interviewJobsArray.filter(job=> job.company !== name);
+    interviewJobsArray = newArray;
+}
+function filterRejectedJobsArray(name){
+    let newArray = rejectedJobsArray.filter(job=> job.company !== name);
+    rejectedJobsArray = newArray;
+}
 function renderInterviewSection(){
     if(interviewJobsArray.length === 0){
         interviewJobContainer.innerHTML = `<div class="flex justify-center items-center h-[200px] border-green-100 border-1 rounded-sm">
                 No job found
             </div>`
     }else{
-        interviewJobContainer.innerText = interviewJobsArray.length;
+        interviewJobContainer.innerHTML = interviewJobsArray.map(job=> `<div class="bg-white border-green-100 p-3 my-2 border-1 rounded-md">
+                <div class="flex justify-between items-center">
+
+                    <p class="company-name">${job.company}</p>
+                    <button class="delete">delete</button>
+                </div>
+                <p class="job-role">${job.jobTitle}</p>
+                <p class="salary">
+                    ${job.salary}
+                </p>
+                <button class="applied-status bg-green-200 px-3 py-1 rounded-sm">${job.status}</button>
+                <p class="job-description">${job.description}</p>
+                <div>
+                    <button
+                        class="interview-btn text-green-700 border-green-700 border-1 rounded-sm px-3 py-1">Interview</button>
+                    <button
+                        class="reject-btn text-red-700 border-red-700 border-1 rounded-sm px-3 py-1 ">Rejected</button>
+                </div>
+            </div>`)
+
     }
 }
 function renderRejectedSection(){
@@ -21,7 +48,25 @@ function renderRejectedSection(){
                 No job found
             </div>`
     }else{
-        rejectedJobContainer.innerText = rejectedJobsArray.length;
+        rejectedJobContainer.innerHTML = rejectedJobsArray.map(job=> `<div class="bg-white border-green-100 p-3 my-2 border-1 rounded-md">
+                <div class="flex justify-between items-center">
+
+                    <p class="company-name">${job.company}</p>
+                    <button class="delete">delete</button>
+                </div>
+                <p class="job-role">${job.jobTitle}</p>
+                <p class="salary">
+                    ${job.salary}
+                </p>
+                <button class="applied-status bg-red-200 px-3 py-1 rounded-sm">${job.status}</button>
+                <p class="job-description">${job.description}</p>
+                <div>
+                    <button
+                        class="interview-btn text-green-700 border-green-700 border-1 rounded-sm px-3 py-1">Interview</button>
+                    <button
+                        class="reject-btn text-red-700 border-red-700 border-1 rounded-sm px-3 py-1 ">Rejected</button>
+                </div>
+            </div>`)
     }
 }
 
@@ -45,7 +90,40 @@ allJobContainer.addEventListener('click', function(event){
         const company = jobcard.children[0].children[0].innerText;
         console.log('company', company);
         const jobTitle = jobcard.children[1].innerText;
-        console.log("jobtitle: ", jobTitle)
+        console.log("jobtitle: ", jobTitle);
+        const salary = jobcard.children[2].innerText;
+        const status = 'Interview';
+        const description = jobcard.children[4].innerText;
+        const job = {
+            company, jobTitle, salary, status, description
+        };
+        if(!interviewJobsArray.some(job=> job.company === company)){
+            interviewJobsArray.push(job);
+        }
+        jobcard.children[3].innerText = 'Interview';
+        jobcard.children[3].className= "applied-status bg-green-100 px-3 py-1 rounded-sm border-1 border-green-200 text-green-500";
+        filterRejectedJobsArray(company);
+
+    }
+    if(event.target.classList.contains('reject-btn')){
+        // extract the information 
+        const jobcard = event.target.parentNode.parentNode;
+        const company = jobcard.children[0].children[0].innerText;
+        console.log('company', company);
+        const jobTitle = jobcard.children[1].innerText;
+        console.log("jobtitle: ", jobTitle);
+        const salary = jobcard.children[2].innerText;
+        const status = 'Rejected';
+        const description = jobcard.children[4].innerText;
+        const job = {
+            company, jobTitle, salary, status, description
+        };
+        if(!rejectedJobsArray.some(job=> job.company === company)){
+            rejectedJobsArray.push(job);
+        }
+        jobcard.children[3].innerText = 'Rejected';
+        jobcard.children[3].className= "applied-status bg-red-100 px-3 py-1 rounded-sm border-1 border-red-200 text-red-500";
+        filterInterviewJobsArray(company);
     }
 })
 
