@@ -107,8 +107,16 @@ function handleClickEvent(event) {
         totalJobCount.forEach(count => count.innerText = Number(count.innerText) - 1)
         // get the job name and filter the interview array and the rejected array
         updateFilteredJobs();
+        // if the all section is visible then don't render other section
+        
+        if(interviewJobContainer.style.display === 'block'){
+
         renderInterviewSection();
+        }
+        if(rejectedJobContainer.style.display === 'block'){
+
         renderRejectedSection();
+        }
 
     }
     if (event.target.classList.contains('interview-btn')) {
