@@ -23,21 +23,25 @@ function filterRejectedJobsArray(name) {
 }
 function renderInterviewSection() {
     if (interviewJobsArray.length === 0) {
-        interviewJobContainer.innerHTML = `<div class="flex justify-center items-center h-[200px] border-green-100 border-1 rounded-sm">
-                No job found
+        interviewJobContainer.innerHTML = `<div class="flex flex-col justify-center items-center h-[200px] border-green-100 border-1 rounded-sm">
+        <i class="fa fa-file-text text-[40px] text-red-200" aria-hidden="true"></i>
+        <h2 class="text-lg font-extrabold">No Job's Available</h2>
+        <p class="font-extralight text-sm">Check back soon for new job opportunities</p>
             </div>`
     } else {
         interviewJobContainer.innerHTML = interviewJobsArray.map(job => `<div class="bg-white border-green-100 p-3 my-2 border-1 rounded-md">
                 <div class="flex justify-between items-center">
 
                     <p class="company-name">${job.company}</p>
-                    <button class="delete">delete</button>
+                    <button class="delete bg-red-100 rounded-full text-red-700 text-sm p-2 cursor-pointer">
+                        <i class="fa fa-trash delete" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <p class="job-role">${job.jobTitle}</p>
                 <p class="salary">
                     ${job.salary}
                 </p>
-                <button class="applied-status bg-green-200 px-3 py-1 rounded-sm">${job.status}</button>
+                <button class="applied-status bg-green-100 border-green-200 text-green-500 px-3 py-1 rounded-sm border-1">${job.status}</button>
                 <p class="job-description">${job.description}</p>
                 <div>
                     <button
@@ -51,21 +55,25 @@ function renderInterviewSection() {
 }
 function renderRejectedSection() {
     if (rejectedJobsArray.length === 0) {
-        rejectedJobContainer.innerHTML = `<div class="flex justify-center items-center h-[200px] border-green-100 border-1 rounded-sm">
-                No job found
+        rejectedJobContainer.innerHTML = `<div class="flex flex-col justify-center items-center h-[200px] border-green-100 border-1 rounded-sm">
+        <i class="fa fa-file-text text-[40px] text-red-200" aria-hidden="true"></i>
+        <h2 class="text-lg font-extrabold">No Job's Available</h2>
+        <p class="font-extralight text-sm">Check back soon for new job opportunities</p>
             </div>`
     } else {
         rejectedJobContainer.innerHTML = rejectedJobsArray.map(job => `<div class="bg-white border-green-100 p-3 my-2 border-1 rounded-md">
                 <div class="flex justify-between items-center">
 
                     <p class="company-name">${job.company}</p>
-                    <button class="delete">delete</button>
+                    <button class="delete bg-red-100 rounded-full text-red-700 text-sm p-2 cursor-pointer">
+                        <i class="fa fa-trash delete" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <p class="job-role">${job.jobTitle}</p>
                 <p class="salary">
                     ${job.salary}
                 </p>
-                <button class="applied-status bg-red-200 px-3 py-1 rounded-sm">${job.status}</button>
+                <button class="applied-status bg-red-100 border-red-200 border-1 text-red-500 px-3 py-1 rounded-sm">${job.status}</button>
                 <p class="job-description">${job.description}</p>
                 <div>
                     <button
@@ -82,7 +90,7 @@ function renderRejectedSection() {
 function handleClickEvent(event) {
     console.log(event.target);
     if (event.target.classList.contains('delete')) {
-        const name = event.target.parentNode.children[0].innerText;
+        const name = event.target.parentNode.parentNode.children[0].innerText;
         const newinterviewArray = interviewJobsArray.filter(job => job.company !== name);
         interviewJobsArray = newinterviewArray;
         const newrejectArray = rejectedJobsArray.filter(job => job.company !== name);
